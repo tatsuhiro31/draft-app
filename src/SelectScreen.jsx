@@ -11,7 +11,7 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
   useEffect(() => {
     fetch(import.meta.env.BASE_URL + "playerdata.csv")
       .then(res => res.text())
-      .then(text => {
+      .then(csvText => {
         Papa.parse(csvText, {
           header: true,
           skipEmptyLines: true,

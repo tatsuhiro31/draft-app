@@ -228,7 +228,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
     useEffect(() => {
         fetch(import.meta.env.BASE_URL + "playerdata.csv")
             .then(res => res.text())
-            .then(text => {
+            .then(csvText => {
                 const rows = csvText.trim().split("\n");
                 const headers = rows[0].split(",");
                 const data = rows.slice(1).map((row) => {
