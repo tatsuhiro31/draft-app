@@ -226,9 +226,9 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
     const [completedLotteryRounds, setCompletedLotteryRounds] = useState([]);
 
     useEffect(() => {
-        fetch("/playerdata.csv")
-            .then((res) => res.text())
-            .then((csvText) => {
+        fetch(import.meta.env.BASE_URL + "playerdata.csv")
+            .then(res => res.text())
+            .then(text => {
                 const rows = csvText.trim().split("\n");
                 const headers = rows[0].split(",");
                 const data = rows.slice(1).map((row) => {
