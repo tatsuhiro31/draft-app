@@ -1,0 +1,5 @@
+[
+  { "code": "P001", "name": "山田 太郎", "team": "阪神", "position": "投手" },
+  { "code": "P002", "name": "佐藤 次郎", "team": "巨人", "position": "内野手" },
+  { "code": "P003", "name": "鈴木 三郎", "team": "広島", "position": "外野手" }
+]
