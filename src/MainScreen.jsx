@@ -553,7 +553,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                     return (
                         <div
                             key={member}
-                            style={{ marginBottom: 20, border: "1px solid #ccc", padding: 10 }}
+                            style={{ marginBottom: 20, border: "1px solid #ccc", padding: 10 ,backgroundColor: "#b5b2b2ff"}}
                         >
                             <h2>{member} さんの指名選手</h2>
 
@@ -690,7 +690,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
 
 
             {viewMode === "horizontal" && (
-                <div style={{ display: "flex", gap: 20, overflowX: "auto" }}>
+                <div style={{ display: "flex", gap: 20, overflowX: "auto", backgroundColor: "#b5b2b2ff" }}>
                     {members.map((member) => {
                         const memberResults = draftResults[member] || {};
                         // 全員が指名完了の最大巡目を取得（縦表示と共通のロジックが望ましい）
@@ -726,7 +726,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                     }}
                                 >
                                     <thead>
-                                        <tr style={{ backgroundColor: "fdff91ff" }}>
+                                        <tr style={{ backgroundColor: "#fdff91ff" }}>
                                             <th>指名順</th>
                                             <th>選手名</th>
                                             <th>球団</th>
