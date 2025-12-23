@@ -7,9 +7,9 @@ import Papa from "papaparse";
 function PositionLogo({ position }) {
   const colorMap = {
     投手: "#ffcccc",
-    捕手: "#ccffcc",
-    内野手: "#ccccff",
-    外野手: "#ffffcc",
+    捕手: "#ccccff",
+    内野手: "#ffffcc",
+    外野手: "#ccffcc",
   };
 
   const shortMap = {
@@ -162,7 +162,9 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
             )
             .map((player) => (
               <tr key={player["選手コード"]}>
-                <td style={tdStyle}>{player["選手"]}</td>
+                <span className="player-name">
+                  {player["選手"]}
+                </span>
                 <td style={tdStyle}>{player["チーム"]}</td>
                 <td style={tdStyle}>
                   <PositionLogo position={player["ポジション"]} />

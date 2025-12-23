@@ -52,3 +52,7 @@ button:hover {
     color: #000000;
   }
 }
+.player-name {
+  font-family: "Meiryo", "メイリオ", system-ui, sans-serif;
+  font-weight: bold;
+}
