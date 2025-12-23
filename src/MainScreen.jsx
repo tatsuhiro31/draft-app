@@ -902,6 +902,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                 borderRadius: 4,
                                 cursor: "pointer",
                                 marginRight: 10,
+                                border: "2px solid #000",
                             }}
                         >
                             指名開始
@@ -915,6 +916,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                 border: "none",
                                 borderRadius: 4,
                                 cursor: "pointer",
+                                border: "2px solid #000",
                             }}
                         >
                             キャンセル
