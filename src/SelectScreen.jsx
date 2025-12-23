@@ -1,30 +1,75 @@
-// SelectScreen.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Papa from "papaparse";
 
+/* =========================
+   ポジションロゴ表示
+========================= */
+function PositionLogo({ position }) {
+  const colorMap = {
+    投手: "#ffcccc",
+    捕手: "#ccffcc",
+    内野手: "#ccccff",
+    外野手: "#ffffcc",
+  };
+
+  const shortMap = {
+    投手: "投",
+    捕手: "捕",
+    内野手: "内",
+    外野手: "外",
+  };
+
+  return (
+    <span
+      style={{
+        display: "inline-block",
+        backgroundColor: colorMap[position] || "#eee",
+        border: "1px solid #999",
+        borderRadius: 4,
+        padding: "2px 6px",
+        fontWeight: "bold",
+        minWidth: 24,
+        textAlign: "center",
+      }}
+      title={position}
+    >
+      {shortMap[position] || position}
+    </span>
+  );
+}
+
+/* =========================
+   メインコンポーネント
+========================= */
 function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
   const [players, setPlayers] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState("全て");
   const [selectedPosition, setSelectedPosition] = useState("全て");
   const [confirmPlayer, setConfirmPlayer] = useState(null);
 
+  /* CSV読み込み */
   useEffect(() => {
     fetch(import.meta.env.BASE_URL + "playerdata.csv")
-      .then(res => res.text())
-      .then(csvText => {
+      .then((res) => res.text())
+      .then((csvText) => {
         Papa.parse(csvText, {
           header: true,
           skipEmptyLines: true,
-          transformHeader: (header) => header.replace(/\uFEFF/g, "").trim(),
-          complete: (result) => {
-            setPlayers(result.data);
-          },
+          transformHeader: (h) => h.replace(/\uFEFF/g, "").trim(),
+          complete: (result) => setPlayers(result.data),
         });
       });
   }, []);
 
-  const teams = ["全て", ...new Set(players.map((p) => p["チーム"]))];
-  const positions = ["全て", ...new Set(players.map((p) => p["ポジション"]))];
+  /* 絞り込み用 */
+  const teams = useMemo(
+    () => ["全て", ...new Set(players.map((p) => p["チーム"]))],
+    [players]
+  );
+  const positions = useMemo(
+    () => ["全て", ...new Set(players.map((p) => p["ポジション"]))],
+    [players]
+  );
 
   const { member, round } = currentPicker;
 
@@ -40,203 +85,135 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
   };
 
   const confirmSelection = () => {
-    if (confirmPlayer) {
-      onSelectPlayer(currentPicker.member, confirmPlayer["選手コード"], currentPicker.round);
-    }
+    if (!confirmPlayer) return;
+    onSelectPlayer(member, confirmPlayer["選手コード"], round);
+    setConfirmPlayer(null);
   };
 
   return (
-    <div>
+    <div style={{ padding: 20 }}>
       <h1>みんなでドラフト会議</h1>
-
       <p>
-        現在の指名者: {member} さん / {round}巡目
+        現在の指名者：{member} さん ／ {round}巡目
       </p>
 
-      <div style={{ marginBottom: 20 }}>
+      {/* 絞り込み */}
+      <div style={{ display: "flex", gap: 20, marginBottom: 20 }}>
         <label>
-          球団で絞り込み：
+          球団：
           <select
             value={selectedTeam}
             onChange={(e) => setSelectedTeam(e.target.value)}
-            style={{ marginLeft: 8 }}
           >
-            {teams.map((team) => (
-              <option key={team} value={team}>
-                {team}
-              </option>
+            {teams.map((t) => (
+              <option key={t}>{t}</option>
             ))}
           </select>
         </label>
-      </div>
 
-      <div style={{ marginBottom: 20 }}>
         <label>
           ポジション：
           <select
             value={selectedPosition}
             onChange={(e) => setSelectedPosition(e.target.value)}
-            style={{ marginLeft: 8 }}
           >
-            {positions.map((pos) => (
-              <option key={pos} value={pos}>
-                {pos}
-              </option>
+            {positions.map((p) => (
+              <option key={p}>{p}</option>
             ))}
           </select>
         </label>
-        <div style={{ marginTop: 10 }}>
-          <button
-            onClick={onCancel}
-            style={{
-              padding: "6px 12px",
-              backgroundColor: "#aaa",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            選手選択をキャンセルして戻る
-          </button>
-        </div>
       </div>
 
-      <ul>
+      {/* ===== 格子状表示 ===== */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
+          gap: 12,
+        }}
+      >
         {players
           .filter(
-            (player) =>
-              (selectedTeam === "全て" || player["チーム"] === selectedTeam) &&
-              (selectedPosition === "全て" || player["ポジション"] === selectedPosition)
+            (p) =>
+              (selectedTeam === "全て" || p["チーム"] === selectedTeam) &&
+              (selectedPosition === "全て" ||
+                p["ポジション"] === selectedPosition)
           )
           .map((player) => (
             <div
+              key={player["選手コード"]}
               style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-                gap: "12px",
-                marginTop: 20,
+                border: "1px solid #ccc",
+                borderRadius: 8,
+                padding: 12,
+                backgroundColor: "#fff",
+                display: "flex",
+                flexDirection: "column",
               }}
             >
-              {players
-                .filter(
-                  (player) =>
-                    (selectedTeam === "全て" || player["チーム"] === selectedTeam) &&
-                    (selectedPosition === "全て" || player["ポジション"] === selectedPosition)
-                )
-                .map((player) => (
-                  <div
-                    key={player["選手コード"]}
-                    style={{
-                      border: "1px solid #ccc",
-                      borderRadius: "6px",
-                      padding: "12px",
-                      backgroundColor: "#fff",
-                      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      height: "140px",
-                    }}
-                  >
-                    <div>
-                      <div style={{ fontWeight: "bold", fontSize: "1.1em", marginBottom: 6 }}>
-                        {player["選手"]}
-                      </div>
-                      <div style={{ marginBottom: 4 }}>
-                        チーム: {player["チーム"]}
-                      </div>
-                      <div style={{ marginBottom: 4 }}>
-                        ポジション: <PositionLogo position={player["ポジション"]} />
-                      </div>
-                      <div style={{ marginBottom: 4 }}>
-                        年齢: {player["年齢"]}歳
-                      </div>
-                      <div>
-                        年俸: {formatSalary(player["年俸"])}
-                      </div>
-                    </div>
+              <div style={{ fontWeight: "bold", fontSize: "1.1em" }}>
+                {player["選手"]}
+              </div>
 
-                    <button
-                      onClick={() => setConfirmPlayer(player)}
-                      style={{
-                        marginTop: "auto",
-                        padding: "6px 12px",
-                        backgroundColor: "#007bff",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      選択
-                    </button>
-                  </div>
-                ))}
+              <div>チーム：{player["チーム"]}</div>
+              <div>
+                ポジション：{" "}
+                <PositionLogo position={player["ポジション"]} />
+              </div>
+              <div>年齢：{player["年齢"]}歳</div>
+              <div>年俸：{formatSalary(player["年俸"])}</div>
+
+              <button
+                style={{ marginTop: "auto" }}
+                onClick={() => setConfirmPlayer(player)}
+              >
+                選択
+              </button>
             </div>
-
           ))}
-      </ul>
+      </div>
 
+      {/* ===== 確認モーダル ===== */}
       {confirmPlayer && (
         <div
           style={{
             position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
+            inset: 0,
             backgroundColor: "rgba(0,0,0,0.5)",
             display: "flex",
-            justifyContent: "center",
             alignItems: "center",
-            zIndex: 1000,
+            justifyContent: "center",
           }}
         >
           <div
             style={{
-              backgroundColor: "#c71515ff",
-              padding: "20px",
-              borderRadius: "8px",
-              minWidth: "300px",
+              backgroundColor: "#c71515",
               color: "white",
+              padding: 20,
+              borderRadius: 8,
+              minWidth: 300,
             }}
           >
-            <h3>以下の選手を指名します</h3>
+            <h3>この選手を指名します</h3>
             <p>選手名：{confirmPlayer["選手"]}</p>
             <p>チーム：{confirmPlayer["チーム"]}</p>
-            <p>ポジション：{confirmPlayer["ポジション"]}</p>
+            <p>
+              ポジション：{" "}
+              <PositionLogo position={confirmPlayer["ポジション"]} />
+            </p>
             <p>年齢：{confirmPlayer["年齢"]}歳</p>
             <p>年俸：{formatSalary(confirmPlayer["年俸"])}</p>
 
-            <div style={{ marginTop: "15px", textAlign: "right" }}>
-              <button onClick={confirmSelection} style={{ padding: "6px 12px" }}>
-                指名確定
-              </button>
-              <button
-                style={{ marginLeft: "10px", padding: "6px 12px" }}
-                onClick={() => setConfirmPlayer(null)}
-              >
-                キャンセル
-              </button>
+            <div style={{ textAlign: "right" }}>
+              <button onClick={confirmSelection}>指名確定</button>
+              <button onClick={() => setConfirmPlayer(null)}>キャンセル</button>
             </div>
           </div>
         </div>
       )}
 
-      {/* キャンセルボタン */}
-      <div style={{ marginTop: 20, textAlign: "center" }}>
-        <button
-          onClick={onCancel}
-          style={{
-            padding: "8px 16px",
-            backgroundColor: "#aaa",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
-          選手選択をキャンセルして戻る
-        </button>
+      <div style={{ marginTop: 20 }}>
+        <button onClick={onCancel}>戻る</button>
       </div>
     </div>
   );
