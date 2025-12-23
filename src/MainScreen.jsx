@@ -209,6 +209,21 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
     useEffect(() => {
         localStorage.setItem("draftViewMode", viewMode);
     }, [viewMode]);
+
+    // リロード確認
+    useEffect(() => {
+        const handleBeforeUnload = (e) => {
+            e.preventDefault();
+            e.returnValue = "";
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, []);
+
     // 抽選状態管理
     const [lotteryRound, setLotteryRound] = useState(null);
     const [lotteryDuplicates, setLotteryDuplicates] = useState([]); // 重複選手コードリスト
@@ -691,7 +706,6 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                         display: "flex",
                         gap: 20,
                         overflowX: "auto",
-                        backgroundColor: "#f0f0f0",
                         padding: 20,
                     }}
                 >

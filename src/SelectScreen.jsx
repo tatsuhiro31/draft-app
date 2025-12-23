@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Papa from "papaparse";
 
+
+
 /* =========================
    ポジションロゴ
 ========================= */
@@ -64,6 +66,20 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
   const [selectedTeam, setSelectedTeam] = useState("全て");
   const [selectedPosition, setSelectedPosition] = useState("全て");
   const [confirmPlayer, setConfirmPlayer] = useState(null);
+
+  // リロード確認
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   /* CSV読み込み */
   useEffect(() => {
