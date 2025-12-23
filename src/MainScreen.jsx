@@ -887,12 +887,37 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                             }}
                         >
                             <h2>選手を指名する</h2>
-                            <div style={{ marginBottom: 10 }}>
-                                <label>指名するユーザー:</label>
+                            <div
+                                style={{
+                                    border: "2px solid #4a90e2",
+                                    backgroundColor: "#f0f6ff",
+                                    padding: 12,
+                                    borderRadius: 8,
+                                    marginBottom: 16,
+                                }}
+                            >
+                                <label
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: 14,
+                                        display: "block",
+                                        marginBottom: 6,
+                                    }}
+                                >
+                                    指名するユーザー
+                                </label>
+
                                 <select
                                     value={selectedMember}
                                     onChange={(e) => setSelectedMember(e.target.value)}
-                                    style={{ width: "100%", padding: 8, marginTop: 5 }}
+                                    style={{
+                                        width: "100%",
+                                        padding: 8,
+                                        fontSize: 16,
+                                        borderRadius: 4,
+                                        border: "1px solid #999",
+                                        backgroundColor: "#fff",
+                                    }}
                                 >
                                     {members.map((m) => (
                                         <option key={m} value={m}>
@@ -936,7 +961,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                 >
                                     {Array.from({ length: maxRound + 1 }, (_, i) => i + 1).map((round) => (
                                         <option key={round} value={round}>
-                                            第{round}巡目
+                                            {round}
                                         </option>
                                     ))}
                                 </select>
