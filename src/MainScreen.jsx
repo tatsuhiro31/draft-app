@@ -557,6 +557,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                 onChange={handleFileChange}
             />
 
+            <p>※指名を間違えた場合は、その巡目の指名を上書きしてください</p>
 
             {viewMode === "vertical" &&
                 members.map((member) => {
@@ -901,17 +902,46 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                 </select>
                             </div>
 
-                            <div style={{ marginBottom: 10 }}>
-                                <label>指名する巡目:</label>
-                                <input
-                                    type="number"
-                                    min={1}
-                                    max={maxRound + 1}
+                            <div
+                                style={{
+                                    border: "2px solid #4a90e2",
+                                    backgroundColor: "#f0f6ff",
+                                    padding: 12,
+                                    borderRadius: 8,
+                                    marginBottom: 16,
+                                }}
+                            >
+                                <label
+                                    style={{
+                                        fontWeight: "bold",
+                                        fontSize: 14,
+                                        display: "block",
+                                        marginBottom: 6,
+                                    }}
+                                >
+                                    指名する巡目
+                                </label>
+
+                                <select
                                     value={selectedRound}
                                     onChange={(e) => setSelectedRound(Number(e.target.value))}
-                                    style={{ width: "100%", padding: 8, marginTop: 5 }}
-                                />
+                                    style={{
+                                        width: "100%",
+                                        padding: 8,
+                                        fontSize: 16,
+                                        borderRadius: 4,
+                                        border: "1px solid #999",
+                                        backgroundColor: "#fff",
+                                    }}
+                                >
+                                    {Array.from({ length: maxRound + 1 }, (_, i) => i + 1).map((round) => (
+                                        <option key={round} value={round}>
+                                            第{round}巡目
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
+
 
                             <button
                                 onClick={handleStartDraft}
