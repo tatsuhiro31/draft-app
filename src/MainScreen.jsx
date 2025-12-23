@@ -857,10 +857,11 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                 >
                     <div
                         style={{
-                            backgroundColor: "black",
+                            backgroundColor: "#bad47cff",
                             padding: 20,
                             borderRadius: 10,
                             width: 400,
+                            border: "2px solid #000",
                         }}
                     >
                         <h2>選手を指名する</h2>

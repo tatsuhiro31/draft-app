@@ -141,7 +141,9 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
           </select>
         </label>
       </div>
-
+      <div style={{ marginTop: 20 }}>
+        <button onClick={onCancel}>戻る</button>
+      </div>
       {/* ===== 選手一覧（表形式） ===== */}
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
@@ -201,12 +203,14 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
         >
           <div
             style={{
-              backgroundColor: "#c71515",
-              color: "white",
+              backgroundColor: "#bad47cff",
+              color: "black",
               padding: 20,
               borderRadius: 8,
               minWidth: 300,
+              border: "2px solid #000",   // ← これを追加
             }}
+
           >
             <h3>この選手を指名します</h3>
             <p>選手名：{confirmPlayer["選手"]}</p>
