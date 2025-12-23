@@ -86,9 +86,6 @@ function DraftSummary({ member, draftResults, players, maxRound }) {
         )
         .filter(Boolean);
 
-    // デバッグ用（必要なければ消してOK）
-    console.log(member, "集計対象選手:", selectedPlayers);
-
     const totalCount = selectedPlayers.length;
     const pitcherCount = selectedPlayers.filter((p) => p["ポジション"] === "投手").length;
     const catcherCount = selectedPlayers.filter((p) => p["ポジション"] === "捕手").length;
@@ -534,7 +531,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                     color: "black"
                 }}
             >
-                指名を復元する
+                （未実装）指名を復元する
             </button>
 
             <input
@@ -571,7 +568,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                     width: "100%",
                                     textAlign: "center",
                                     borderCollapse: "collapse",
-                                    backgroundColor: "#adababff"
+                                    backgroundColor: "#ffffffff"
                                 }}
                             >
                                 <thead>
