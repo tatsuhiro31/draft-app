@@ -550,7 +550,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                     return (
                         <div
                             key={member}
-                            style={{ marginBottom: 20, border: "1px solid #ccc", padding: 10}}
+                            style={{ marginBottom: 20, border: "1px solid #ccc", padding: 10 }}
                         >
                             <h2>{member} さんの指名選手</h2>
 
@@ -560,7 +560,6 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                 players={players}
                                 maxRound={maxValidRound}
                             />
-
 
                             <table
                                 border="1"
@@ -687,7 +686,16 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
 
 
             {viewMode === "horizontal" && (
-                <div style={{ display: "flex", gap: 20, overflowX: "auto" }}>
+                < div
+                    style={{
+                        display: "flex",
+                        gap: 20,
+                        overflowX: "auto",
+                        backgroundColor: "#f0f0f0",
+                        padding: 20,
+                    }}
+                >
+
                     {members.map((member) => {
                         const memberResults = draftResults[member] || {};
                         // 全員が指名完了の最大巡目を取得（縦表示と共通のロジックが望ましい）
@@ -701,7 +709,6 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                     border: "1px solid #ccc",
                                     padding: 10,
                                     flexShrink: 0,
-                                    
                                 }}
                             >
                                 <h2>{member} さんの指名選手</h2>
@@ -712,7 +719,6 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                     players={players}
                                     maxRound={maxValidRound}
                                 />
-
 
                                 <table
                                     border="1"
@@ -836,119 +842,126 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                         );
                     })}
                 </div>
-            )}
+            )
+            }
 
 
-            {showModal && (
-                <div
-                    style={{
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        width: "100vw",
-                        height: "100vh",
-                        backgroundColor: "rgba(0,0,0,0.7)",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        zIndex: 1000,
-                    }}
-                >
+            {
+                showModal && (
                     <div
                         style={{
-                            backgroundColor: "#bad47cff",
-                            padding: 20,
-                            borderRadius: 10,
-                            width: 400,
-                            border: "2px solid #000",
+                            position: "fixed",
+                            top: 0,
+                            left: 0,
+                            width: "100vw",
+                            height: "100vh",
+                            backgroundColor: "rgba(0,0,0,0.7)",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            zIndex: 1000,
                         }}
                     >
-                        <h2>選手を指名する</h2>
-                        <div style={{ marginBottom: 10 }}>
-                            <label>指名するユーザー:</label>
-                            <select
-                                value={selectedMember}
-                                onChange={(e) => setSelectedMember(e.target.value)}
-                                style={{ width: "100%", padding: 8, marginTop: 5 }}
+                        <div
+                            style={{
+                                backgroundColor: "#bad47cff",
+                                padding: 20,
+                                borderRadius: 10,
+                                width: 400,
+                                border: "2px solid #000",
+                            }}
+                        >
+                            <h2>選手を指名する</h2>
+                            <div style={{ marginBottom: 10 }}>
+                                <label>指名するユーザー:</label>
+                                <select
+                                    value={selectedMember}
+                                    onChange={(e) => setSelectedMember(e.target.value)}
+                                    style={{ width: "100%", padding: 8, marginTop: 5 }}
+                                >
+                                    {members.map((m) => (
+                                        <option key={m} value={m}>
+                                            {m}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div style={{ marginBottom: 10 }}>
+                                <label>指名する巡目:</label>
+                                <input
+                                    type="number"
+                                    min={1}
+                                    max={maxRound + 1}
+                                    value={selectedRound}
+                                    onChange={(e) => setSelectedRound(Number(e.target.value))}
+                                    style={{ width: "100%", padding: 8, marginTop: 5 }}
+                                />
+                            </div>
+
+                            <button
+                                onClick={handleStartDraft}
+                                style={{
+                                    padding: "8px 16px",
+                                    backgroundColor: "#4caf50",
+                                    color: "white",
+                                    borderRadius: 4,
+                                    cursor: "pointer",
+                                    marginRight: 10,
+                                    border: "2px solid #000",
+                                }}
                             >
-                                {members.map((m) => (
-                                    <option key={m} value={m}>
-                                        {m}
-                                    </option>
-                                ))}
-                            </select>
+                                指名開始
+                            </button>
+
+                            <button
+                                onClick={() => setShowModal(false)}
+                                style={{
+                                    padding: "8px 16px",
+                                    backgroundColor: "#ccc",
+                                    borderRadius: 4,
+                                    cursor: "pointer",
+                                    border: "2px solid #000",
+                                }}
+                            >
+                                キャンセル
+                            </button>
                         </div>
-
-                        <div style={{ marginBottom: 10 }}>
-                            <label>指名する巡目:</label>
-                            <input
-                                type="number"
-                                min={1}
-                                max={maxRound + 1}
-                                value={selectedRound}
-                                onChange={(e) => setSelectedRound(Number(e.target.value))}
-                                style={{ width: "100%", padding: 8, marginTop: 5 }}
-                            />
-                        </div>
-
-                        <button
-                            onClick={handleStartDraft}
-                            style={{
-                                padding: "8px 16px",
-                                backgroundColor: "#4caf50",
-                                color: "white",
-                                borderRadius: 4,
-                                cursor: "pointer",
-                                marginRight: 10,
-                                border: "2px solid #000",
-                            }}
-                        >
-                            指名開始
-                        </button>
-
-                        <button
-                            onClick={() => setShowModal(false)}
-                            style={{
-                                padding: "8px 16px",
-                                backgroundColor: "#ccc",
-                                borderRadius: 4,
-                                cursor: "pointer",
-                                border: "2px solid #000",
-                            }}
-                        >
-                            キャンセル
-                        </button>
                     </div>
-                </div>
-            )}
+                )
+            }
 
-            {showLottery && lotteryRound && (
-                <Lottery
-                    round={lotteryRound}
-                    playerCode={lotteryDuplicates[currentLotteryIndex]}
-                    draftResults={draftResults}
-                    members={members}
-                    players={players}
-                    onClose={() => {
-                        setShowLottery(false);
-                        setLotteryRound(null);
-                        setLotteryDuplicates([]);
-                        setCurrentLotteryIndex(0);
-                    }}
-                    onResult={handleLotteryResult}
-                />
-            )}
+            {
+                showLottery && lotteryRound && (
+                    <Lottery
+                        round={lotteryRound}
+                        playerCode={lotteryDuplicates[currentLotteryIndex]}
+                        draftResults={draftResults}
+                        members={members}
+                        players={players}
+                        onClose={() => {
+                            setShowLottery(false);
+                            setLotteryRound(null);
+                            setLotteryDuplicates([]);
+                            setCurrentLotteryIndex(0);
+                        }}
+                        onResult={handleLotteryResult}
+                    />
+                )
+            }
 
-            {completedRoundPopup && (
-                <DraftCompletionPopup
-                    round={completedRoundPopup}
-                    draftResults={draftResults}
-                    members={members}
-                    players={players}
-                    onClose={handleClosePopup}
-                    onProceedLottery={handleProceedLottery}
-                />
-            )}
-        </div>
+            {
+                completedRoundPopup && (
+                    <DraftCompletionPopup
+                        round={completedRoundPopup}
+                        draftResults={draftResults}
+                        members={members}
+                        players={players}
+                        onClose={handleClosePopup}
+                        onProceedLottery={handleProceedLottery}
+                    />
+                )
+            }
+        </div >
     );
 }
