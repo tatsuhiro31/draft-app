@@ -48,7 +48,7 @@ button:hover {
 /* prefers-color-scheme を完全に上書き */
 @media (prefers-color-scheme: dark) {
   html, body, #root {
-    background-color: #ffffff;
+    background-color: #b9b6b6;
     color: #000000;
   }
 }
