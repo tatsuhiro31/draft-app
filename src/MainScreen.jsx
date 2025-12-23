@@ -898,7 +898,6 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                 padding: "8px 16px",
                                 backgroundColor: "#4caf50",
                                 color: "white",
-                                border: "none",
                                 borderRadius: 4,
                                 cursor: "pointer",
                                 marginRight: 10,
@@ -913,7 +912,6 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                             style={{
                                 padding: "8px 16px",
                                 backgroundColor: "#ccc",
-                                border: "none",
                                 borderRadius: 4,
                                 cursor: "pointer",
                                 border: "2px solid #000",
