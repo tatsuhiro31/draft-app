@@ -109,16 +109,71 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
               (selectedPosition === "全て" || player["ポジション"] === selectedPosition)
           )
           .map((player) => (
-            <li key={player["選手コード"]} style={{ marginBottom: 8 }}>
-              {player["選手"]} ({player["チーム"]} / {player["ポジション"]} / {player["年齢"]}歳 /{" "}
-              {formatSalary(player["年俸"])})
-              <button
-                onClick={() => setConfirmPlayer(player)}
-                style={{ marginLeft: 10, padding: "4px 8px" }}
-              >
-                選択
-              </button>
-            </li>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gap: "12px",
+                marginTop: 20,
+              }}
+            >
+              {players
+                .filter(
+                  (player) =>
+                    (selectedTeam === "全て" || player["チーム"] === selectedTeam) &&
+                    (selectedPosition === "全て" || player["ポジション"] === selectedPosition)
+                )
+                .map((player) => (
+                  <div
+                    key={player["選手コード"]}
+                    style={{
+                      border: "1px solid #ccc",
+                      borderRadius: "6px",
+                      padding: "12px",
+                      backgroundColor: "#fff",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      height: "140px",
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontWeight: "bold", fontSize: "1.1em", marginBottom: 6 }}>
+                        {player["選手"]}
+                      </div>
+                      <div style={{ marginBottom: 4 }}>
+                        チーム: {player["チーム"]}
+                      </div>
+                      <div style={{ marginBottom: 4 }}>
+                        ポジション: <PositionLogo position={player["ポジション"]} />
+                      </div>
+                      <div style={{ marginBottom: 4 }}>
+                        年齢: {player["年齢"]}歳
+                      </div>
+                      <div>
+                        年俸: {formatSalary(player["年俸"])}
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => setConfirmPlayer(player)}
+                      style={{
+                        marginTop: "auto",
+                        padding: "6px 12px",
+                        backgroundColor: "#007bff",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      選択
+                    </button>
+                  </div>
+                ))}
+            </div>
+
           ))}
       </ul>
 
