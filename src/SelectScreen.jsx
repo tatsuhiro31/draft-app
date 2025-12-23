@@ -164,12 +164,12 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>
           <tr>
+            <th style={thStyle}></th>
             <th style={thStyle}>選手名</th>
             <th style={thStyle}>球団</th>
             <th style={thStyle}>守備</th>
             <th style={thStyle}>年齢</th>
             <th style={thStyle}>年俸</th>
-            <th style={thStyle}></th>
           </tr>
         </thead>
         <tbody>
@@ -183,6 +183,11 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
             .map((player) => (
               <tr key={player["選手コード"]}>
                 <td style={tdStyle}>
+                  <button onClick={() => setConfirmPlayer(player)}>
+                    選択
+                  </button>
+                </td>
+                <td style={tdStyle}>
                   <span className="player-name">
                     {player["選手"]}
                   </span>
@@ -194,11 +199,6 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
                 <td style={tdStyle}>{player["年齢"]}歳</td>
                 <td style={tdStyle}>
                   {formatSalary(player["年俸"])}
-                </td>
-                <td style={tdStyle}>
-                  <button onClick={() => setConfirmPlayer(player)}>
-                    選択
-                  </button>
                 </td>
               </tr>
             ))}
