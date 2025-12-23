@@ -56,3 +56,11 @@ button:hover {
   font-family: "Meiryo", "メイリオ", system-ui, sans-serif;
   font-weight: bold;
 }
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid #ccc;
+}

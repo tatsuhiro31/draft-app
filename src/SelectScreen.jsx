@@ -50,9 +50,11 @@ const thStyle = {
 
 const tdStyle = {
   border: "1px solid #ccc",
-  padding: "8px",
-  textAlign: "center",
+  padding: "6px 8px",
+  verticalAlign: "middle",
+  whiteSpace: "nowrap",
 };
+
 
 /* =========================
    メイン画面
