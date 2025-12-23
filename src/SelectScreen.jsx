@@ -225,8 +225,21 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
             <p>年俸：{formatSalary(confirmPlayer["年俸"])}</p>
 
             <div style={{ textAlign: "right" }}>
-              <button onClick={confirmSelection}
-                style={{border: "2px solid #000",}}>指名確定</button>
+              <button
+                onClick={confirmSelection}
+                style={{
+                  border: "2px solid #000",
+                  backgroundColor: "#fff",
+                  color: "#000",
+                  borderRadius: "6px",
+                  padding: "8px 16px",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+              >
+                指名確定
+              </button>
+
               <button onClick={() => setConfirmPlayer(null)}>
                 キャンセル
               </button>
