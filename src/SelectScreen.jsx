@@ -162,9 +162,11 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
             )
             .map((player) => (
               <tr key={player["選手コード"]}>
-                <span className="player-name">
-                  {player["選手"]}
-                </span>
+                <td style={tdStyle}>
+                  <span className="player-name">
+                    {player["選手"]}
+                  </span>
+                </td>
                 <td style={tdStyle}>{player["チーム"]}</td>
                 <td style={tdStyle}>
                   <PositionLogo position={player["ポジション"]} />
