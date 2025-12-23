@@ -724,7 +724,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                     }}
                                 >
                                     <thead>
-                                        <tr style={{ backgroundColor: "black" }}>
+                                        <tr style={{ backgroundColor: "fdff91ff" }}>
                                             <th>指名順</th>
                                             <th>選手名</th>
                                             <th>球団</th>
