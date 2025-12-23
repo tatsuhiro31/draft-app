@@ -704,7 +704,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                     border: "1px solid #ccc",
                                     padding: 10,
                                     flexShrink: 0,
-                                    backgroundColor: "#f5f5f5",
+                                    
                                 }}
                             >
                                 <h2>{member} さんの指名選手</h2>
