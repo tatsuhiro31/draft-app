@@ -132,31 +132,62 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
       </p>
 
       {/* 絞り込み */}
-      <div style={{ display: "flex", gap: 20, marginBottom: 20 }}>
-        <label>
-          球団：
-          <select
-            value={selectedTeam}
-            onChange={(e) => setSelectedTeam(e.target.value)}
-          >
-            {teams.map((t) => (
-              <option key={t}>{t}</option>
-            ))}
-          </select>
-        </label>
+      <div
+        style={{
+          border: "2px solid #000",
+          borderRadius: 8,
+          padding: 16,
+          marginBottom: 20,
+          backgroundColor: "#f5faff",
+        }}
+      >
+        <div
+          style={{
+            fontWeight: "bold",
+            marginBottom: 12,
+            fontSize: 16,
+          }}
+        >
+          🔍 絞り込み条件
+        </div>
 
-        <label>
-          ポジション：
-          <select
-            value={selectedPosition}
-            onChange={(e) => setSelectedPosition(e.target.value)}
-          >
-            {positions.map((p) => (
-              <option key={p}>{p}</option>
-            ))}
-          </select>
-        </label>
+        <div style={{ display: "flex", gap: 20 }}>
+          <label style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <span style={{ fontWeight: "bold" }}>球団</span>
+            <select
+              value={selectedTeam}
+              onChange={(e) => setSelectedTeam(e.target.value)}
+              style={{
+                padding: "6px 8px",
+                borderRadius: 4,
+                border: "1px solid #666",
+              }}
+            >
+              {teams.map((t) => (
+                <option key={t}>{t}</option>
+              ))}
+            </select>
+          </label>
+
+          <label style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            <span style={{ fontWeight: "bold" }}>ポジション</span>
+            <select
+              value={selectedPosition}
+              onChange={(e) => setSelectedPosition(e.target.value)}
+              style={{
+                padding: "6px 8px",
+                borderRadius: 4,
+                border: "1px solid #666",
+              }}
+            >
+              {positions.map((p) => (
+                <option key={p}>{p}</option>
+              ))}
+            </select>
+          </label>
+        </div>
       </div>
+
       <div style={{ marginTop: 20 }}>
         <button onClick={onCancel}>戻る</button>
       </div>
