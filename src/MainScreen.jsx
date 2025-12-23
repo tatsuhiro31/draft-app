@@ -571,6 +571,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                     width: "100%",
                                     textAlign: "center",
                                     borderCollapse: "collapse",
+                                    backgroundColor: "#adababff"
                                 }}
                             >
                                 <thead>
@@ -721,6 +722,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
                                         width: "100%",
                                         textAlign: "center",
                                         borderCollapse: "collapse",
+                                        backgroundColor: "#adababff"
                                     }}
                                 >
                                     <thead>
