@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 
 const GAS_URL =
-  "https://script.google.com/macros/s/AKfycbyox-zatl9lGUhk4uTh1VaJ68WT0SjFG9vp7c4nBeLfdZPFwAz_U0eBc5E35XvUvW2p/exec";
+  "https://script.google.com/macros/s/AKfycbwUsMZY34E6NIj1yqEUGmVgGOAJ1BGICl1IB8OQQRKCMm_AQWDGFgLrkmZI5apGZ092/exec";
 
 function TopScreen({ onStart }) {
   const [memberCount, setMemberCount] = useState(2);
