@@ -4,18 +4,6 @@ import React, { useState, useEffect } from "react";
 const GAS_URL =
   "https://script.google.com/macros/s/AKfycbyox-zatl9lGUhk4uTh1VaJ68WT0SjFG9vp7c4nBeLfdZPFwAz_U0eBc5E35XvUvW2p/exec";
 
-const params = new URLSearchParams({
-  type: "startDraft",
-  members: JSON.stringify(memberNames),
-});
-
-const res = await fetch(`${GAS_URL}?${params}`);
-const data = await res.json();
-
-localStorage.setItem("draftId", data.draftId);
-onStart(memberNames);
-
-
 function TopScreen({ onStart }) {
   const [memberCount, setMemberCount] = useState(2);
   const [memberNames, setMemberNames] = useState(["ユーザー1"]);
@@ -43,33 +31,39 @@ function TopScreen({ onStart }) {
     setMemberNames(newNames);
   };
 
-  // ★ ここが正しい handleStart
+  // ★ GAS にドラフト開始を送信
   const handleStart = async () => {
     if (memberNames.some((n) => n.trim() === "")) {
       alert("すべての参加ユーザー名を入力してください");
       return;
     }
 
-    const res = await fetch(GAS_URL, {
-      method: "POST",
-      body: JSON.stringify({
-        type: "startDraft",
-        members: memberNames,
-      }),
-    });
+    try {
+      const res = await fetch(GAS_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: "startDraft",
+          members: memberNames,
+        }),
+      });
 
+      const data = await res.json();
+      console.log("draftId:", data.draftId);
 
-    const data = await res.json();
-    console.log("draftId:", data.draftId);
+      // draftId を保存
+      localStorage.setItem("draftId", data.draftId);
 
-    // localStorage に保存
-    localStorage.setItem("draftId", data.draftId);
-
-    // MainScreenへ
-    onStart(memberNames);
+      // 次の画面へ
+      onStart(memberNames);
+    } catch (err) {
+      console.error(err);
+      alert("ドラフト開始に失敗しました");
+    }
   };
 
-  // ★ JSX は必ずここで return
   return (
     <div style={{ maxWidth: 800, margin: "20px auto", textAlign: "center" }}>
       <h1>みんなでドラフト会議</h1>
