@@ -125,7 +125,7 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
   };
 
   const viewMode = localStorage.getItem("viewMode") || "vertical";
-const isVertical = viewMode === "vertical";
+  const isVertical = viewMode === "vertical";
 
   return (
     <div style={{ padding: 20 }}>
@@ -190,7 +190,10 @@ const isVertical = viewMode === "vertical";
           </label>
         </div>
       </div>
-
+      {!isVertical && <div style={{ marginTop: 20 }}>
+        <p >縦表示の場合は、球団、年齢、年俸が表示されません。</p>
+        <p >これらを確認したい場合は、一度選択ボタンを押下してください。</p>
+      </div>}
       <div style={{ marginTop: 20 }}>
         <button onClick={onCancel}>戻る</button>
       </div>
