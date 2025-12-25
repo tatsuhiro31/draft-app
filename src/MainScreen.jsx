@@ -4,10 +4,6 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzyFokrUyLaxu3Oo1QP0Z8H
 
 async function fetchPicks(draftId) {
     const res = await fetch(GAS_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
         body: JSON.stringify({
             type: "getPicks",
             draftId: draftId,
