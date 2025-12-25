@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 
 const GAS_URL = "https://script.google.com/macros/s/AKfycbzyFokrUyLaxu3Oo1QP0Z8HBCgAX7X4Z_T0cynncKhofayP-4bHM1VE730HlVG5kJh9/exec";
 const draftId = localStorage.getItem("draftId");
+
 console.log("draftId:", localStorage.getItem("draftId"));
 
 async function fetchPicks(draftId) {
-  const params = new URLSearchParams({
-    type: "getPicks",
-    draftId: draftId,
-  });
+    const params = new URLSearchParams({
+        type: "getPicks",
+        draftId: draftId,
+    });
 
-  const res = await fetch(`${GAS_URL}?${params}`);
-  return await res.json();
+    const res = await fetch(`${GAS_URL}?${params}`);
+    return await res.json();
 }
 
 
@@ -250,6 +251,7 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
         load(); // 初回読み込み
 
         const timer = setInterval(load, 5000); // 5秒ごと
+
         return () => clearInterval(timer);
     }, [draftId]);
 
@@ -514,6 +516,9 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
     const duplicateCodes = allSelectedCodes.filter((code, idx, arr) => arr.indexOf(code) !== idx);
     const duplicateCodesSet = new Set(duplicateCodes);
     // ↑【ここまで追加】
+
+    const [draftResults, setDraftResults] = useState({});
+
 
     return (
         <div style={{ maxWidth: 1800, margin: "20px auto" }}>
