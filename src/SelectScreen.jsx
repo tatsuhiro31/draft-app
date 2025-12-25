@@ -190,7 +190,7 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
           </label>
         </div>
       </div>
-      {!isVertical && <div style={{ marginTop: 20 }}>
+      {isVertical && <div>
         <p >縦表示の場合は、球団、年齢、年俸が表示されません。</p>
         <p >これらを確認したい場合は、一度選択ボタンを押下してください。</p>
       </div>}
