@@ -126,12 +126,14 @@ const confirmSelection = async () => {
     body: JSON.stringify({
       type: "savePick",
       draftId,
-      round: selectedRound,
-      member: selectedMember,
-      playerCode: selectedPlayer["選手コード"],
+      round: round,           // currentPicker からの round
+      member: member,         // currentPicker からの member
+      playerCode: confirmPlayer["選手コード"],  // confirmPlayerから取得
     }),
   });
+  setConfirmPlayer(null);
 };
+
 
   const viewMode = localStorage.getItem("viewMode") || "vertical";
   const isVertical = viewMode === "vertical";
