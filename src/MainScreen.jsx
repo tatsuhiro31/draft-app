@@ -226,7 +226,7 @@ function DraftCompletionPopup({ round, draftResults, members, players, onClose, 
     );
 }
 
-export default function MainScreen({ draftResults, members, onBackToTop, onSelectPlayer, onRestoreDraft }) {
+export default function MainScreen({ members, onBackToTop, onSelectPlayer, onRestoreDraft }) {
     const [players, setPlayers] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedMember, setSelectedMember] = useState(members[0] || "");
