@@ -231,7 +231,8 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
     const [showModal, setShowModal] = useState(false);
     const [selectedMember, setSelectedMember] = useState(members[0] || "");
     const [selectedRound, setSelectedRound] = useState(1);
-    const [currentRound, setCurrentRound] = React.useState(1);
+    const [currentRound, setCurrentRound] = React.useState(1);    
+    const [draftResults, setDraftResults] = useState({});
     const [viewMode, setViewMode] = useState(() => {
         return localStorage.getItem("draftViewMode") || "vertical";
     });
@@ -516,9 +517,6 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
     const duplicateCodes = allSelectedCodes.filter((code, idx, arr) => arr.indexOf(code) !== idx);
     const duplicateCodesSet = new Set(duplicateCodes);
     // ↑【ここまで追加】
-
-    const [draftResults, setDraftResults] = useState({});
-
 
     return (
         <div style={{ maxWidth: 1800, margin: "20px auto" }}>
