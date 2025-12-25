@@ -4,6 +4,28 @@ import React, { useState, useEffect } from "react";
 const GAS_URL =
   "https://script.google.com/macros/s/AKfycbxVrtw6wL0k-m6Z_6raOw-WuIctg_TZzV4ln43HV5DCd5sAA2eE4U8pW-SfXSSvj5Ad/exec";
 
+// JSONP fetch helper
+function fetchJSONP(url, callbackName = "callback") {
+  return new Promise((resolve, reject) => {
+    const callbackFuncName = `jsonp_callback_${Date.now()}`;
+
+    window[callbackFuncName] = (data) => {
+      resolve(data);
+      delete window[callbackFuncName];
+      script.remove();
+    };
+
+    const script = document.createElement("script");
+    script.src = `${url}&${callbackName}=${callbackFuncName}`;
+    script.onerror = () => {
+      reject(new Error(`JSONP script load error for ${script.src}`));
+      delete window[callbackFuncName];
+      script.remove();
+    };
+    document.body.appendChild(script);
+  });
+}
+
 function TopScreen({ onStart }) {
   const [memberCount, setMemberCount] = useState(2);
   const [memberNames, setMemberNames] = useState(["ユーザー1"]);
@@ -31,9 +53,9 @@ function TopScreen({ onStart }) {
     setMemberNames(newNames);
   };
 
-  // ★ GAS にドラフト開始を送信
+  // ★ GAS にドラフト開始をJSONPで送信
   const handleStart = async () => {
-    if (memberNames.some(n => n.trim() === "")) {
+    if (memberNames.some((n) => n.trim() === "")) {
       alert("すべての参加ユーザー名を入力してください");
       return;
     }
@@ -43,14 +65,15 @@ function TopScreen({ onStart }) {
       members: JSON.stringify(memberNames),
     });
 
-    const res = await fetch(`${GAS_URL}?${params}`);
-    const data = await res.json();
-
-    localStorage.setItem("draftId", data.draftId);
-    onStart(memberNames);
-
+    try {
+      const data = await fetchJSONP(`${GAS_URL}?${params.toString()}`);
+      localStorage.setItem("draftId", data.draftId);
+      onStart(memberNames);
+    } catch (error) {
+      alert("通信エラーが発生しました。");
+      console.error(error);
+    }
   };
-
 
   return (
     <div style={{ maxWidth: 800, margin: "20px auto", textAlign: "center" }}>
