@@ -33,36 +33,25 @@ function TopScreen({ onStart }) {
 
   // ★ GAS にドラフト開始を送信
   const handleStart = async () => {
-    if (memberNames.some((n) => n.trim() === "")) {
+    if (memberNames.some(n => n.trim() === "")) {
       alert("すべての参加ユーザー名を入力してください");
       return;
     }
 
-    try {
-      const res = await fetch(GAS_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          type: "startDraft",
-          members: memberNames,
-        }),
-      });
+    const params = new URLSearchParams({
+      type: "startDraft",
+      members: JSON.stringify(memberNames),
+    });
 
-      const data = await res.json();
-      console.log("draftId:", data.draftId);
+    const res = await fetch(`${GAS_URL}?${params.toString()}`);
+    const data = await res.json();
 
-      // draftId を保存
-      localStorage.setItem("draftId", data.draftId);
+    console.log("draftId:", data.draftId);
+    localStorage.setItem("draftId", data.draftId);
 
-      // 次の画面へ
-      onStart(memberNames);
-    } catch (err) {
-      console.error(err);
-      alert("ドラフト開始に失敗しました");
-    }
+    onStart(memberNames);
   };
+
 
   return (
     <div style={{ maxWidth: 800, margin: "20px auto", textAlign: "center" }}>
