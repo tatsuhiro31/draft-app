@@ -119,20 +119,21 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
     return `${num}万円`;
   };
 
-const confirmSelection = async () => {
-  await fetch(GAS_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      type: "savePick",
-      draftId,
-      round: round,           // currentPicker からの round
-      member: member,         // currentPicker からの member
-      playerCode: confirmPlayer["選手コード"],  // confirmPlayerから取得
-    }),
-  });
-  setConfirmPlayer(null);
-};
+  const confirmSelection = async () => {
+    await fetch(GAS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: "savePick",
+        draftId,
+        round,
+        member,
+        playerCode: confirmPlayer["選手コード"],
+      }),
+    });
+
+    setConfirmPlayer(null);
+  };
 
 
   const viewMode = localStorage.getItem("viewMode") || "vertical";
@@ -293,7 +294,7 @@ const confirmSelection = async () => {
                 onClick={confirmSelection}
                 style={{
                   border: "2px solid #000",
-                  backgroundColor: "#fff",
+                  backgroundColor: "#ecaf2dff",
                   color: "#000",
                   borderRadius: "6px",
                   padding: "8px 16px",
