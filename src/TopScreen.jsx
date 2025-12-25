@@ -43,13 +43,12 @@ function TopScreen({ onStart }) {
       members: JSON.stringify(memberNames),
     });
 
-    const res = await fetch(`${GAS_URL}?${params.toString()}`);
+    const res = await fetch(`${GAS_URL}?${params}`);
     const data = await res.json();
 
-    console.log("draftId:", data.draftId);
     localStorage.setItem("draftId", data.draftId);
-
     onStart(memberNames);
+
   };
 
 
