@@ -17,7 +17,8 @@ function jsonpRequest(url, callbackName = "callback") {
       delete window[callbackFunctionName];
     };
 
-    script.src = `${url}&${callbackName}=${callbackFunctionName}`;
+    const separator = url.includes('?') ? '&' : '?';
+    script.src = `${url}${separator}${callbackName}=${callbackFunctionName}`;
     script.onerror = () => {
       reject(new Error("JSONP request failed"));
       document.body.removeChild(script);
