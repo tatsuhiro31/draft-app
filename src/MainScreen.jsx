@@ -5,15 +5,19 @@ const draftId = localStorage.getItem("draftId");
 
 console.log("draftId:", localStorage.getItem("draftId"));
 
-async function fetchPicks(draftId) {
-    const params = new URLSearchParams({
-        type: "getPicks",
-        draftId: draftId,
-    });
+useEffect(() => {
+    fetchPicks(draftId).then((rows) => {
+        const result = {};
 
-    const res = await fetch(`${GAS_URL}?${params}`);
-    return await res.json();
-}
+        rows.forEach(r => {
+            if (!result[r.member]) result[r.member] = {};
+            result[r.member][r.round] = r.playerCode;
+        });
+
+        setDraftResults(result);
+    });
+}, [draftId]);
+
 
 
 function convertToDraftResults(picks) {
@@ -231,7 +235,7 @@ export default function MainScreen({ members, onBackToTop, onSelectPlayer, onRes
     const [showModal, setShowModal] = useState(false);
     const [selectedMember, setSelectedMember] = useState(members[0] || "");
     const [selectedRound, setSelectedRound] = useState(1);
-    const [currentRound, setCurrentRound] = React.useState(1);    
+    const [currentRound, setCurrentRound] = React.useState(1);
     const [draftResults, setDraftResults] = useState({});
     const [viewMode, setViewMode] = useState(() => {
         return localStorage.getItem("draftViewMode") || "vertical";

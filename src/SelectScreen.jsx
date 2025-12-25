@@ -119,11 +119,19 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
     return `${num}万円`;
   };
 
-  const confirmSelection = () => {
-    if (!confirmPlayer) return;
-    onSelectPlayer(member, confirmPlayer["選手コード"], round);
-    setConfirmPlayer(null);
-  };
+const handleConfirm = async () => {
+  await fetch(GAS_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      type: "savePick",
+      draftId,
+      round: selectedRound,
+      member: selectedMember,
+      playerCode: selectedPlayer["選手コード"],
+    }),
+  });
+};
 
   const viewMode = localStorage.getItem("viewMode") || "vertical";
   const isVertical = viewMode === "vertical";
