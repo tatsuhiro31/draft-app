@@ -397,7 +397,7 @@ export default function MainScreen({ members, onBackToTop, onSelectPlayer, onRes
                 }
             });
             setLotteryLosers([]);
-            onSelectPlayer(null, null, newDraftResults);
+            setDraftResults(newDraftResults);
         }
     };
 
