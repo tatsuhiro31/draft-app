@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Papa from "papaparse";
 
 const draftId = localStorage.getItem("draftId");
-
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzyFokrUyLaxu3Oo1QP0Z8HBCgAX7X4Z_T0cynncKhofayP-4bHM1VE730HlVG5kJh9/exec";
 
 /* =========================
    ポジションロゴ
