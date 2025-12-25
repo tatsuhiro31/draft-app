@@ -3,15 +3,15 @@ import React, { useState, useEffect } from "react";
 const GAS_URL = "https://script.google.com/macros/s/AKfycbzyFokrUyLaxu3Oo1QP0Z8HBCgAX7X4Z_T0cynncKhofayP-4bHM1VE730HlVG5kJh9/exec";
 
 async function fetchPicks(draftId) {
-    const res = await fetch(GAS_URL, {
-        body: JSON.stringify({
-            type: "getPicks",
-            draftId: draftId,
-        }),
-    });
+  const params = new URLSearchParams({
+    type: "getPicks",
+    draftId: draftId,
+  });
 
-    return await res.json();
+  const res = await fetch(`${GAS_URL}?${params}`);
+  return await res.json();
 }
+
 
 function convertToDraftResults(picks) {
     const results = {};
