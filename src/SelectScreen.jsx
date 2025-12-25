@@ -4,6 +4,30 @@ import Papa from "papaparse";
 const draftId = localStorage.getItem("draftId");
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxVrtw6wL0k-m6Z_6raOw-WuIctg_TZzV4ln43HV5DCd5sAA2eE4U8pW-SfXSSvj5Ad/exec";
 
+/* JSONPリクエスト用関数 */
+function jsonpRequest(url, callbackName = "callback") {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    const callbackFunctionName = `jsonp_callback_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+
+    // グローバルにコールバック関数を定義
+    window[callbackFunctionName] = (data) => {
+      resolve(data);
+      document.body.removeChild(script);
+      delete window[callbackFunctionName];
+    };
+
+    script.src = `${url}&${callbackName}=${callbackFunctionName}`;
+    script.onerror = () => {
+      reject(new Error("JSONP request failed"));
+      document.body.removeChild(script);
+      delete window[callbackFunctionName];
+    };
+
+    document.body.appendChild(script);
+  });
+}
+
 /* =========================
    ポジションロゴ
 ========================= */
@@ -57,7 +81,6 @@ const tdStyle = {
   verticalAlign: "middle",
   whiteSpace: "nowrap",
 };
-
 
 /* =========================
    メイン画面
@@ -128,26 +151,15 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
       playerCode: confirmPlayer["選手コード"],
     });
 
-    // GETで送信（GASのdoGetで受け取る前提）
-    const res = await fetch(`${GAS_URL}?${params.toString()}`, {
-      method: "GET",
-      // mode: 'cors' がデフォルトなので不要
-    });
-
-    if (!res.ok) {
+    try {
+      const data = await jsonpRequest(`${GAS_URL}?${params.toString()}`);
+      console.log(data);
+      setConfirmPlayer(null);
+    } catch (e) {
       alert("送信失敗しました");
-      return;
+      console.error(e);
     }
-
-    // レスポンスJSONを取得
-    const data = await res.json();
-    console.log(data);
-
-    setConfirmPlayer(null);
   };
-
-
-
 
   const viewMode = localStorage.getItem("viewMode") || "vertical";
   const isVertical = viewMode === "vertical";
@@ -215,10 +227,12 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
           </label>
         </div>
       </div>
-      {isVertical && <div>
-        <p >縦表示の場合は、球団、年齢、年俸が表示されません。</p>
-        <p >これらを確認したい場合は、一度選択ボタンを押下してください。</p>
-      </div>}
+      {isVertical && (
+        <div>
+          <p>縦表示の場合は、球団、年齢、年俸が表示されません。</p>
+          <p>これらを確認したい場合は、一度選択ボタンを押下してください。</p>
+        </div>
+      )}
       <div style={{ marginTop: 20 }}>
         <button onClick={onCancel}>戻る</button>
       </div>
@@ -250,18 +264,16 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
                   </button>
                 </td>
                 <td style={tdStyle}>
-                  <span className="player-name">
-                    {player["選手"]}
-                  </span>
+                  <span className="player-name">{player["選手"]}</span>
                 </td>
                 <td style={tdStyle}>
                   <PositionLogo position={player["ポジション"]} />
                 </td>
                 {!isVertical && <td style={tdStyle}>{player["チーム"]}</td>}
                 {!isVertical && <td style={tdStyle}>{player["年齢"]}歳</td>}
-                {!isVertical && <td style={tdStyle}>
-                  {formatSalary(player["年俸"])}
-                </td>}
+                {!isVertical && (
+                  <td style={tdStyle}>{formatSalary(player["年俸"])}</td>
+                )}
               </tr>
             ))}
         </tbody>
@@ -288,16 +300,13 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
               minWidth: 300,
               border: "2px solid #000",
             }}
-
           >
             <h3>この選手を指名します</h3>
             <p>選手名：{confirmPlayer["選手"]}</p>
             <p>球団：{confirmPlayer["チーム"]}</p>
             <p>
               守備：
-              <PositionLogo
-                position={confirmPlayer["ポジション"]}
-              />
+              <PositionLogo position={confirmPlayer["ポジション"]} />
             </p>
             <p>年齢：{confirmPlayer["年齢"]}歳</p>
             <p>年俸：{formatSalary(confirmPlayer["年俸"])}</p>
@@ -318,9 +327,7 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
                 指名確定
               </button>
 
-              <button onClick={() => setConfirmPlayer(null)}>
-                キャンセル
-              </button>
+              <button onClick={() => setConfirmPlayer(null)}>キャンセル</button>
             </div>
           </div>
         </div>
