@@ -124,6 +124,9 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
     setConfirmPlayer(null);
   };
 
+  const viewMode = localStorage.getItem("viewMode") || "vertical";
+const isVertical = viewMode === "vertical";
+
   return (
     <div style={{ padding: 20 }}>
       <h1>みんなでドラフト会議</h1>
@@ -196,11 +199,11 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
         <thead>
           <tr>
             <th style={thStyle}></th>
-            <th style={thStyle}>守備</th>
             <th style={thStyle}>選手名</th>
-            <th style={thStyle}>球団</th>
-            <th style={thStyle}>年齢</th>
-            <th style={thStyle}>年俸</th>
+            <th style={thStyle}>守備</th>
+            {!isVertical && <th style={thStyle}>球団</th>}
+            {!isVertical && <th style={thStyle}>年齢</th>}
+            {!isVertical && <th style={thStyle}>年俸</th>}
           </tr>
         </thead>
         <tbody>
@@ -223,14 +226,14 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
                     {player["選手"]}
                   </span>
                 </td>
-                <td style={tdStyle}>{player["チーム"]}</td>
                 <td style={tdStyle}>
                   <PositionLogo position={player["ポジション"]} />
                 </td>
-                <td style={tdStyle}>{player["年齢"]}歳</td>
-                <td style={tdStyle}>
+                {!isVertical && <td style={tdStyle}>{player["チーム"]}</td>}
+                {!isVertical && <td style={tdStyle}>{player["年齢"]}歳</td>}
+                {!isVertical && <td style={tdStyle}>
                   {formatSalary(player["年俸"])}
-                </td>
+                </td>}
               </tr>
             ))}
         </tbody>
