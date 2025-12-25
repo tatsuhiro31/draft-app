@@ -40,9 +40,6 @@ function TopScreen({ onStart }) {
 
     const res = await fetch(GAS_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8"
-      },
       body: JSON.stringify({
         type: "startDraft",
         members: memberNames,
