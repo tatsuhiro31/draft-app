@@ -119,7 +119,7 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
     return `${num}万円`;
   };
 
-const handleConfirm = async () => {
+const confirmSelection = async () => {
   await fetch(GAS_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
