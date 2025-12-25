@@ -5,6 +5,21 @@ const draftId = localStorage.getItem("draftId");
 
 console.log("draftId:", localStorage.getItem("draftId"));
 
+async function fetchPicks(draftId) {
+  if (!draftId) return [];
+  const url = `${GAS_URL}?draftId=${encodeURIComponent(draftId)}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Failed to fetch picks");
+    const data = await res.json();
+    return data; // 期待する形式の配列であること
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
+}
+
+
 function convertToDraftResults(picks) {
     const results = {};
 
