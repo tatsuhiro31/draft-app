@@ -1,5 +1,35 @@
 import React, { useState, useEffect } from "react";
 
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzIYVVM_HzT0Rcbg-C-LseGN83csdUTUFgofF4VLXg8g05oV5hkwmrm_5PMGVHPqa8f/exec";
+
+async function fetchPicks(draftId) {
+    const res = await fetch(GAS_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            type: "getPicks",
+            draftId: draftId,
+        }),
+    });
+
+    return await res.json();
+}
+
+function convertToDraftResults(picks) {
+    const results = {};
+
+    picks.forEach((p) => {
+        if (!results[p.member]) {
+            results[p.member] = {};
+        }
+        results[p.member][p.round] = p.playerCode;
+    });
+
+    return results;
+}
+
 function Lottery({ round, playerCode, draftResults, members, players, onClose, onResult }) {
     const [winner, setWinner] = useState(null);
 
@@ -209,6 +239,22 @@ export default function MainScreen({ draftResults, members, onBackToTop, onSelec
     useEffect(() => {
         localStorage.setItem("draftViewMode", viewMode);
     }, [viewMode]);
+
+    useEffect(() => {
+        if (!draftId) return;
+
+        const load = async () => {
+            const picks = await fetchPicks(draftId);
+            const converted = convertToDraftResults(picks);
+            setDraftResults(converted);
+        };
+
+        load(); // 初回読み込み
+
+        const timer = setInterval(load, 5000); // 5秒ごと
+        return () => clearInterval(timer);
+    }, [draftId]);
+
 
     // リロード確認
     useEffect(() => {

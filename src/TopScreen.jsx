@@ -1,5 +1,8 @@
-// TopScreen.jsx (変更なし)
+// TopScreen.jsx
 import React, { useState, useEffect } from "react";
+
+const GAS_URL =
+  "https://script.google.com/macros/s/AKfycbzIYVVM_HzT0Rcbg-C-LseGN83csdUTUFgofF4VLXg8g05oV5hkwmrm_5PMGVHPqa8f/exec";
 
 function TopScreen({ onStart }) {
   const [memberCount, setMemberCount] = useState(2);
@@ -28,17 +31,37 @@ function TopScreen({ onStart }) {
     setMemberNames(newNames);
   };
 
-  const handleStart = () => {
-    if (memberNames.some((name) => name.trim() === "")) {
+  // ★ ここが正しい handleStart
+  const handleStart = async () => {
+    if (memberNames.some((n) => n.trim() === "")) {
       alert("すべての参加ユーザー名を入力してください");
       return;
     }
+
+    const res = await fetch(GAS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        type: "startDraft",
+        members: memberNames,
+      }),
+    });
+
+    const data = await res.json();
+    console.log("draftId:", data.draftId);
+
+    // localStorage に保存
+    localStorage.setItem("draftId", data.draftId);
+
+    // MainScreenへ
     onStart(memberNames);
   };
 
+  // ★ JSX は必ずここで return
   return (
     <div style={{ maxWidth: 800, margin: "20px auto", textAlign: "center" }}>
       <h1>みんなでドラフト会議</h1>
+
       <div style={{ marginBottom: 20 }}>
         <label>
           参加人数：
