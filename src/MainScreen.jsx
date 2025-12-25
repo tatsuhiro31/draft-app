@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwUsMZY34E6NIj1yqEUGmVgGOAJ1BGICl1IB8OQQRKCMm_AQWDGFgLrkmZI5apGZ092/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzyFokrUyLaxu3Oo1QP0Z8HBCgAX7X4Z_T0cynncKhofayP-4bHM1VE730HlVG5kJh9/exec";
 
 async function fetchPicks(draftId) {
     const res = await fetch(GAS_URL, {
