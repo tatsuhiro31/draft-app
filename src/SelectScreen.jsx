@@ -129,7 +129,6 @@ const confirmSelection = async () => {
   });
 
   const res = await fetch(`${GAS_URL}?${params.toString()}`, {
-    method: "GET", 
   });
 
   setConfirmPlayer(null);
