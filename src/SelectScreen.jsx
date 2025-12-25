@@ -119,20 +119,33 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
     return `${num}万円`;
   };
 
-const confirmSelection = async () => {
-  const params = new URLSearchParams({
-    type: "savePick",
-    draftId: draftId,
-    round: round.toString(),
-    member: member,
-    playerCode: confirmPlayer["選手コード"],
-  });
+  const confirmSelection = async () => {
+    const params = new URLSearchParams({
+      type: "savePick",
+      draftId: draftId,
+      round: round.toString(),
+      member: member,
+      playerCode: confirmPlayer["選手コード"],
+    });
 
-  const res = await fetch(`${GAS_URL}?${params.toString()}`, {
-  });
+    // GETで送信（GASのdoGetで受け取る前提）
+    const res = await fetch(`${GAS_URL}?${params.toString()}`, {
+      method: "GET",
+      // mode: 'cors' がデフォルトなので不要
+    });
 
-  setConfirmPlayer(null);
-};
+    if (!res.ok) {
+      alert("送信失敗しました");
+      return;
+    }
+
+    // レスポンスJSONを取得
+    const data = await res.json();
+    console.log(data);
+
+    setConfirmPlayer(null);
+  };
+
 
 
 
