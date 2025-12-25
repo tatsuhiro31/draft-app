@@ -4,25 +4,27 @@ import Papa from "papaparse";
 const draftId = localStorage.getItem("draftId");
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxVrtw6wL0k-m6Z_6raOw-WuIctg_TZzV4ln43HV5DCd5sAA2eE4U8pW-SfXSSvj5Ad/exec";
 
-/* JSONPリクエスト用関数 */
-function jsonpRequest(url, callbackName = "callback") {
+/* =========================
+   JSONPリクエスト関数
+========================= */
+function jsonpRequest(url) {
   return new Promise((resolve, reject) => {
-    const script = document.createElement("script");
-    const callbackFunctionName = `jsonp_callback_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+    const callbackName = `jsonp_callback_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
 
-    // グローバルにコールバック関数を定義
-    window[callbackFunctionName] = (data) => {
+    // グローバルコールバック関数を定義
+    window[callbackName] = (data) => {
       resolve(data);
-      document.body.removeChild(script);
-      delete window[callbackFunctionName];
+      delete window[callbackName];
+      script.remove();
     };
 
-    const separator = url.includes('?') ? '&' : '?';
-    script.src = `${url}${separator}${callbackName}=${callbackFunctionName}`;
+    const script = document.createElement("script");
+    const separator = url.includes("?") ? "&" : "?";
+    script.src = `${url}${separator}callback=${callbackName}`;
     script.onerror = () => {
       reject(new Error("JSONP request failed"));
-      document.body.removeChild(script);
-      delete window[callbackFunctionName];
+      delete window[callbackName];
+      script.remove();
     };
 
     document.body.appendChild(script);
@@ -143,6 +145,7 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
     return `${num}万円`;
   };
 
+  /* ========== confirmSelection修正（JSONP呼び出し） ========== */
   const confirmSelection = async () => {
     const params = new URLSearchParams({
       type: "savePick",
@@ -260,9 +263,7 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
             .map((player) => (
               <tr key={player["選手コード"]}>
                 <td style={tdStyle}>
-                  <button onClick={() => setConfirmPlayer(player)}>
-                    選択
-                  </button>
+                  <button onClick={() => setConfirmPlayer(player)}>選択</button>
                 </td>
                 <td style={tdStyle}>
                   <span className="player-name">{player["選手"]}</span>
@@ -323,6 +324,7 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
                   padding: "8px 16px",
                   fontWeight: "bold",
                   cursor: "pointer",
+                  marginRight: 8,
                 }}
               >
                 指名確定
