@@ -119,21 +119,22 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
     return `${num}万円`;
   };
 
-  const confirmSelection = async () => {
-    await fetch(GAS_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        type: "savePick",
-        draftId,
-        round,
-        member,
-        playerCode: confirmPlayer["選手コード"],
-      }),
-    });
+const confirmSelection = async () => {
+  const params = new URLSearchParams({
+    type: "savePick",
+    draftId: draftId,
+    round: round.toString(),
+    member: member,
+    playerCode: confirmPlayer["選手コード"],
+  });
 
-    setConfirmPlayer(null);
-  };
+  const res = await fetch(`${GAS_URL}?${params.toString()}`, {
+    method: "GET", 
+  });
+
+  setConfirmPlayer(null);
+};
+
 
 
   const viewMode = localStorage.getItem("viewMode") || "vertical";
