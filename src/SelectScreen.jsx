@@ -196,9 +196,9 @@ function SelectScreen({ onSelectPlayer, currentPicker, onCancel }) {
         <thead>
           <tr>
             <th style={thStyle}></th>
+            <th style={thStyle}>守備</th>
             <th style={thStyle}>選手名</th>
             <th style={thStyle}>球団</th>
-            <th style={thStyle}>守備</th>
             <th style={thStyle}>年齢</th>
             <th style={thStyle}>年俸</th>
           </tr>
