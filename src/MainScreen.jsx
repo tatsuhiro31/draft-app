@@ -5,21 +5,6 @@ const draftId = localStorage.getItem("draftId");
 
 console.log("draftId:", localStorage.getItem("draftId"));
 
-useEffect(() => {
-    fetchPicks(draftId).then((rows) => {
-        const result = {};
-
-        rows.forEach(r => {
-            if (!result[r.member]) result[r.member] = {};
-            result[r.member][r.round] = r.playerCode;
-        });
-
-        setDraftResults(result);
-    });
-}, [draftId]);
-
-
-
 function convertToDraftResults(picks) {
     const results = {};
 
@@ -243,6 +228,20 @@ export default function MainScreen({ members, onBackToTop, onSelectPlayer, onRes
     useEffect(() => {
         localStorage.setItem("draftViewMode", viewMode);
     }, [viewMode]);
+
+
+    useEffect(() => {
+        fetchPicks(draftId).then((rows) => {
+            const result = {};
+
+            rows.forEach(r => {
+                if (!result[r.member]) result[r.member] = {};
+                result[r.member][r.round] = r.playerCode;
+            });
+
+            setDraftResults(result);
+        });
+    }, [draftId]);
 
     useEffect(() => {
         if (!draftId) return;
