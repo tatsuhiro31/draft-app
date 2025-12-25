@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Papa from "papaparse";
 
+const draftId = localStorage.getItem("draftId");
 
 
 /* =========================

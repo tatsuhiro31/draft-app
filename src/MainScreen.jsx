@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const GAS_URL = "https://script.google.com/macros/s/AKfycbzyFokrUyLaxu3Oo1QP0Z8HBCgAX7X4Z_T0cynncKhofayP-4bHM1VE730HlVG5kJh9/exec";
+const draftId = localStorage.getItem("draftId");
 
 async function fetchPicks(draftId) {
   const params = new URLSearchParams({
